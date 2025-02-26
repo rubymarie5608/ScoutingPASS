@@ -23,7 +23,7 @@ var options = {
 };
 
 // Built from the JSON
-var requiredFields = []; //["e", "m", "l", "r", "s", "as"];
+var requiredFields = []; //["m", "r", "s"];
 
 function addTimer(table, idx, name, data) {
   var row = table.insertRow(idx);
@@ -741,7 +741,6 @@ function configure() {
   var idx = 0;
   pmc.forEach(element => {
     idx = addElement(pmt, idx, element);
-	buildRequiredElementList(element);
   });
 
   // Configure auton screen
@@ -790,34 +789,6 @@ function getRobot(){
 
 function resetRobot() {
 for ( rb of document.getElementsByName('r')) { rb.checked = false };
-}
-
-
-function getLevel(){
-return document.forms.scoutingForm.l.value
-}
-
-
-function validateData() {
-  var ret = true;
-  var errStr = "";
-  for (rf of requiredFields) {
-    var thisRF = document.forms.scoutingForm[rf];
-	if (thisRF.value == "[]" || thisRF.value.length == 0) {
-	  if (rf == "as") {
-		rftitle = "Auto Start Position"
-	  } else {
-		thisInputEl = thisRF instanceof RadioNodeList ? thisRF[0] : thisRF;
-		rftitle = thisInputEl.parentElement.parentElement.children[0].innerHTML.replace("&nbsp;","");
-	  }
-	  errStr += rf + ": " + rftitle + "\n";
-	  ret = false;
-	}
-  }
-  if (ret == false) {
-    alert("Enter all required values\n" + errStr);
-  }
-  return ret
 }
 
 function getData(dataFormat) {
@@ -874,11 +845,10 @@ function getData(dataFormat) {
 }
 
 function updateQRHeader() {
-  let str = 'Event: !EVENT! Match: !MATCH! Robot: !ROBOT! Team: !TEAM!';
+  let str = 'Match: !MATCH! Robot: !ROBOT! Team: !TEAM!';
 
   if (!pitScouting) {
     str = str
-      .replace('!EVENT!', document.getElementById("input_e").value)
       .replace('!MATCH!', document.getElementById("input_m").value)
       .replace('!ROBOT!', document.getElementById("display_r").value)
       .replace('!TEAM!', document.getElementById("input_t").value);
@@ -892,7 +862,7 @@ function updateQRHeader() {
 
 
 function qr_regenerate() {
-  // Validate required pre-match date (event, match, level, robot, scouter)
+  // Validate required pre-match date (match, robot, scouter)
   if (!pitScouting) {  
     if (validateData() == false) {
       // Don't allow a swipe until all required data is filled in
@@ -953,10 +923,6 @@ function clearForm() {
     if (code == "e") continue
     if (code == "s") continue
 
-    if (e.className == "clickableImage") {
-      e.value = "[]";
-      continue;
-    }
 
     radio = code.indexOf("_")
     if (radio > -1) {
@@ -1229,10 +1195,6 @@ function getCurrentTeamNumberFromRobot() {
       return getCurrentMatch().blue.team_keys[parseInt(getRobot().charAt(1)) - 1]
     }
   }
-}
-
-function getCurrentMatchKey() {
-  return document.getElementById("input_e").value + "_" + getLevel() + document.getElementById("input_m").value;
 }
 
 function getCurrentMatch() {
