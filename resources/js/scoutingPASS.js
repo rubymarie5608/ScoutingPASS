@@ -674,12 +674,6 @@ function addElement(table, idx, data) {
   return idx
 }
 
-function buildRequiredElementList(element) {
-	if (element.required == "true") {
-		requiredFields.push(element.code);
-	}
-}
-
 function configure() {
   try {
     var mydata = JSON.parse(config_data);
