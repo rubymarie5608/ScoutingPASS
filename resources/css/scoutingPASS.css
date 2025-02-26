@@ -63,15 +63,6 @@ html, body{
     color: black;
 }
 
-.field-image {
-    margin: 2vw;
-}
-
-.field-image-src{
-    background-position: center;
-    border: 1px solid;
-}
-
 .main-panel{
     display: none;
     height: 100%;
@@ -166,14 +157,6 @@ h2{
     background-color: black;
     padding: 10px;
     color: white;
-}
-
-.undoButton, .flipButton {
-    font-family: Alexis;
-    background-color: black;
-    padding: 10px;
-    color: white;
-    margin-left: 20px;
 }
 
 #prevButton7, #prevButton8, #prevButton9{
