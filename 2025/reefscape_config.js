@@ -16,7 +16,7 @@ var config_data = `
       "code": "e",
       "type": "event",
       "defaultValue": "2025ilpe",
-      "required": "false"
+      "required": "true"
     },
     { "name": "Match Level",
       "code": "l",
@@ -27,7 +27,7 @@ var config_data = `
         "f": "Finals"
       },
       "defaultValue": "qm",
-      "required": "false"
+      "required": "true"
     },
     { "name": "Match #",
       "code": "m",
