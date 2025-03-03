@@ -216,190 +216,6 @@ function addCounter(table, idx, name, data) {
   return idx + 1;
 }
 
-function addClickableImage(table, idx, name, data) {
-  var row = table.insertRow(idx);
-  var cell = row.insertCell(0);
-  cell.setAttribute("colspan", 2);
-  cell.setAttribute("style", "text-align: center;");
-  cell.classList.add("title");
-  if (!data.hasOwnProperty('code')) {
-    cell1.innerHTML = `Error: No code specified for ${name}`;
-    return idx + 1;
-  }
-  cell.innerHTML = name;
-  if (data.hasOwnProperty('tooltip')) {
-    cell.setAttribute("title", data.tooltip);
-  }
-
-  let showFlip = true;
-  if (data.hasOwnProperty('showFlip')) {
-    if (data.showFlip.toLowerCase() == 'false') {
-      showFlip = false;
-    }
-  }
-
-  let showUndo = true;
-  if (data.hasOwnProperty('showUndo')) {
-    if (data.showUndo.toLowerCase() == 'false') {
-      showUndo = false;
-    }
-  }
-
-  if (showFlip || showUndo) {
-    idx += 1
-    row = table.insertRow(idx);
-    cell = row.insertCell(0);
-    cell.setAttribute("colspan", 2);
-    cell.setAttribute("style", "text-align: center;");
-
-    if (showUndo) {
-      // Undo button
-      let undoButton = document.createElement("input");
-      undoButton.setAttribute("type", "button");
-      undoButton.setAttribute("onclick", "undo(this.parentElement)");
-      undoButton.setAttribute("value", "Undo");
-      undoButton.setAttribute("id", "undo_" + data.code);
-      undoButton.setAttribute("class", "undoButton");
-      cell.appendChild(undoButton);
-    }
-
-    if (showFlip) {
-      // Flip button
-      let flipButton = document.createElement("input");
-      flipButton.setAttribute("type", "button");
-      flipButton.setAttribute("onclick", "flip(this.parentElement)");
-      flipButton.setAttribute("value", "Flip Image");
-      flipButton.setAttribute("id", "flip_" + data.code);
-      flipButton.setAttribute("class", "flipButton");
-      if (showUndo) {
-        flipButton.setAttribute("margin-left", '8px');
-      }
-      cell.appendChild(flipButton);
-    }
-  }
-
-  idx += 1;
-  row = table.insertRow(idx);
-  cell = row.insertCell(0);
-  cell.setAttribute("colspan", 2);
-  cell.setAttribute("style", "text-align: center;");
-  var canvas = document.createElement('canvas');
-  //canvas.onclick = onFieldClick;
-  canvas.setAttribute("onclick", "onFieldClick(event)");
-  canvas.setAttribute("class", "field-image-src");
-  canvas.setAttribute("id", "canvas_" + data.code);
-  canvas.innerHTML = "No canvas support";
-  cell.appendChild(canvas);
-
-  idx += 1;
-  row = table.insertRow(idx);
-  row.setAttribute("style", "display:none");
-  cell = row.insertCell(0);
-  cell.setAttribute("colspan", 2);
-  var inp = document.createElement('input');
-  inp.setAttribute("type", "hidden");
-  inp.setAttribute("id", "XY_" + data.code);
-  inp.setAttribute("value", "[]");
-  cell.appendChild(inp);
-  inp = document.createElement('input');
-  inp.setAttribute("hidden", "");
-  if (enableGoogleSheets && data.hasOwnProperty('gsCol')) {
-    inp.setAttribute("name", data.gsCol);
-  } else {
-    inp.setAttribute("name", data.code);
-  }
-  inp.setAttribute("id", "input_" + data.code);
-  inp.setAttribute("value", "[]");
-  inp.setAttribute("class", "clickableImage");
-
-  cell.appendChild(inp);
-
-  // TODO: Make these more efficient/elegant
-  inp = document.createElement('input');
-  inp.setAttribute("hidden", "");
-  inp.setAttribute("id", "clickRestriction_" + data.code);
-  inp.setAttribute("value", "none");
-  if (data.hasOwnProperty('clickRestriction')) {
-    if ((data.clickRestriction == "one") ||
-      (data.clickRestriction == "onePerBox")) {
-      inp.setAttribute("value", data.clickRestriction);
-    }
-  }
-  cell.appendChild(inp);
-
-  inp = document.createElement('input');
-  inp.setAttribute("hidden", "");
-  inp.setAttribute("id", "allowableResponses_" + data.code);
-  inp.setAttribute("value", "none");
-  if (data.hasOwnProperty('allowableResponses')) {
-    let responses = data.allowableResponses.split(' ').map(Number)
-    inp.setAttribute("value", responses);
-  }
-  cell.appendChild(inp);
-
-  inp = document.createElement('input');
-  inp.setAttribute("hidden", "");
-  inp.setAttribute("id", "dimensions_" + data.code);
-  inp.setAttribute("value", "12 6");
-  if (data.hasOwnProperty('dimensions')) {
-    if (data.dimensions != "") {
-      // TODO: Add validation for "X Y" format
-      inp.setAttribute("value", data.dimensions);
-    }
-  }
-  cell.appendChild(inp);
-
-  inp = document.createElement('input');
-  inp.setAttribute("hidden", "");
-  inp.setAttribute("id", "shape_" + data.code);
-  // Default shape: white circle of size 5 not filled in
-  inp.setAttribute("value", "circle 5 white white true");
-  if (data.hasOwnProperty('shape')) {
-    if (data.shape != "") {
-      // TODO: Add validation for "shape size color fill" format
-      inp.setAttribute("value", data.shape);
-    }
-  }
-  cell.appendChild(inp);
-
-  inp = document.createElement('input');
-  inp.setAttribute("hidden", "");
-  inp.setAttribute("id", "toggleClick_" + data.code);
-  inp.setAttribute("value", "false");
-  if (data.hasOwnProperty('toggleClick')) {
-    if (data.toggleClick != "") {
-      // TODO: Add validation for true/false format
-      inp.setAttribute("value", data.toggleClick);
-    }
-  }
-  cell.appendChild(inp);
-
-  if (data.hasOwnProperty('cycleTimer')) {
-    if (data.cycleTimer != "") {
-      inp = document.createElement('input');
-      inp.setAttribute("hidden", "");
-      inp.setAttribute("id", "cycleTimer_" + data.code);
-      inp.setAttribute("value", data.cycleTimer);
-      cell.appendChild(inp);
-    }
-  }
-
-  idx += 1
-  row = table.insertRow(idx);
-  row.setAttribute("style", "display:none");
-  cell = row.insertCell(0);
-  cell.setAttribute("colspan", 2);
-  var img = document.createElement('img');
-  img.src = data.filename;
-  img.setAttribute("id", "img_" + data.code);
-  img.setAttribute("class", "field-image-src");
-  img.setAttribute("onload", "drawFields()");
-  img.setAttribute("hidden", "");
-  cell.appendChild(img);
-
-  return idx + 1
-}
-
 function addText(table, idx, name, data) {
   var row = table.insertRow(idx);
   var cell1 = row.insertCell(0);
@@ -741,7 +557,6 @@ function configure() {
   var idx = 0;
   pmc.forEach(element => {
     idx = addElement(pmt, idx, element);
-	buildRequiredElementList(element);
   });
 
   // Configure auton screen
@@ -792,33 +607,6 @@ function resetRobot() {
 for ( rb of document.getElementsByName('r')) { rb.checked = false };
 }
 
-
-function getLevel(){
-return document.forms.scoutingForm.l.value
-}
-
-
-function validateData() {
-  var ret = true;
-  var errStr = "";
-  for (rf of requiredFields) {
-    var thisRF = document.forms.scoutingForm[rf];
-	if (thisRF.value == "[]" || thisRF.value.length == 0) {
-	  if (rf == "as") {
-		rftitle = "Auto Start Position"
-	  } else {
-		thisInputEl = thisRF instanceof RadioNodeList ? thisRF[0] : thisRF;
-		rftitle = thisInputEl.parentElement.parentElement.children[0].innerHTML.replace("&nbsp;","");
-	  }
-	  errStr += rf + ": " + rftitle + "\n";
-	  ret = false;
-	}
-  }
-  if (ret == false) {
-    alert("Enter all required values\n" + errStr);
-  }
-  return ret
-}
 
 function getData(dataFormat) {
   var Form = document.forms.scoutingForm;
@@ -874,7 +662,7 @@ function getData(dataFormat) {
 }
 
 function updateQRHeader() {
-  let str = 'Event: !EVENT! Match: !MATCH! Robot: !ROBOT! Team: !TEAM!';
+  let str = 'Match: !MATCH! Robot: !ROBOT! Team: !TEAM!';
 
   if (!pitScouting) {
     str = str
@@ -892,7 +680,7 @@ function updateQRHeader() {
 
 
 function qr_regenerate() {
-  // Validate required pre-match date (event, match, level, robot, scouter)
+  // Validate required pre-match date (match, robot, scouter)
   if (!pitScouting) {  
     if (validateData() == false) {
       // Don't allow a swipe until all required data is filled in
@@ -949,14 +737,8 @@ function clearForm() {
     // Don't clear key fields
     if (code == "m") continue
     if (code.substring(0, 2) == "r_") continue
-    if (code.substring(0, 2) == "l_") continue
-    if (code == "e") continue
     if (code == "s") continue
-
-    if (e.className == "clickableImage") {
-      e.value = "[]";
-      continue;
-    }
+	  
 
     radio = code.indexOf("_")
     if (radio > -1) {
@@ -1221,19 +1003,6 @@ function getMatch(matchKey) {
   return "";
 }
 
-function getCurrentTeamNumberFromRobot() {
-  if (getRobot() != "" && typeof getRobot() !== 'undefined' && getCurrentMatch() != "") {
-    if (getRobot().charAt(0) == "r") {
-      return getCurrentMatch().red.team_keys[parseInt(getRobot().charAt(1)) - 1]
-    } else if (getRobot().charAt(0) == "b") {
-      return getCurrentMatch().blue.team_keys[parseInt(getRobot().charAt(1)) - 1]
-    }
-  }
-}
-
-function getCurrentMatchKey() {
-  return document.getElementById("input_e").value + "_" + getLevel() + document.getElementById("input_m").value;
-}
 
 function getCurrentMatch() {
   return getMatch(getCurrentMatchKey());
