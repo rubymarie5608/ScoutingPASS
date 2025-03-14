@@ -5,7 +5,7 @@ var config_data = `
   "page_title": "REEFSCAPE",
   "checkboxAs": "10",
   "prematch": [
-    { "name": "Scouter Initials",
+    { "name": "Scouter Initials - TEST6",
       "code": "s",
       "type": "scouter",
       "size": 5,
@@ -15,7 +15,7 @@ var config_data = `
     { "name": "Event",
       "code": "e",
       "type": "event",
-      "defaultValue": "2025ilpe",
+      "defaultValue": "2025txpla",
       "required": "true"
     },
     { "name": "Match Level",
@@ -94,14 +94,16 @@ var config_data = `
       "allowableResponses": "1 2 3 4 5 6 7 8 9 10 11 12 13 14 17 18 19 20 23 24 25 26 27 28 29 30 31 32 33 34 35 36",
       "shape": "circle 5 black red true"
     },
-    { "name": "Processor Score",
-      "code": "aps",
-      "type": "counter"
-    },
-    { "name": "Net Score",
-      "code": "ans",
-      "type": "counter"
-    }
+    { "name": "Reef Algae",
+      "code": "ara",
+      "type":"radio",
+      "choices": {
+        "ir": "In Robot<br>",
+        "of": "On Floor<br>",
+        "x": "Not attempted"
+        },
+            "defaultValue": "x"
+      }
   ],
   "teleop": [
     { "name": "Coral L1",
@@ -128,23 +130,28 @@ var config_data = `
       "code": "tns",
       "type": "counter"
     },
-    { "name": "Pickup From",
-      "code": "tpu",
+    { "name": "Coral Pickup",
+      "code": "cpu",
       "type": "radio",
       "choices": {
-        "s": "Coral Station<br>",
+        "s": "HP Station<br>",
+        "f": "Floor<br>",
+        "b": "Both<br>",
+        "x": "Not Attempted"
+      },
+       "required":"true"
+    },
+    { "name": "Algae Pickup",
+      "code": "apu",
+      "type": "radio",
+      "choices": {
+        "s": "Reef<br>",
         "f": "Floor<br>",
         "b": "Both<br>",
         "x": "Not Attempted"
       },
       "defaultValue": "x"
     },
-    { "name": "Scored in<br>Opponent<br>Processor",
-      "code": "opp",
-      "type": "bool"
-    }
-  ],
-  "endgame": [
     { "name": "Barge Timer",
       "code": "ebt",
       "type": "timer"
@@ -154,16 +161,18 @@ var config_data = `
       "type":"radio",
       "choices": {
         "bp": "Parked<br>",
-        "ba": "Parked/Failed Climb<br>",
-        "bs": "Shallow Cage<br>",
-        "bd": "Deep Cage<br>",
+        "bh": "Failed High Climb<br>",
+        "bl": "Failed Low Climb<br>",
+        "bs": "High Climb<br>",
+        "bd": "Low Climb<br>",
         "x": "Not attempted"
       },
       "defaultValue": "x"
     }
   ],
-  "postmatch": [
-    { "name": "Attained Coopertition Pt",
+  "endgame": [
+  
+  {"name": "Attained Coopertition Pt",
       "code": "cop",
       "type": "bool"
     },
@@ -173,41 +182,19 @@ var config_data = `
       "min": 0,
       "max": 9,
       "defaultValue": 0
-    },
-    { "name": "Driver Skill",
-      "code": "ds",
-      "type": "radio",
-      "choices": {
-        "n": "Not Effective<br>",
-        "a": "Average<br>",
-        "v": "Very Effective<br>",
-        "x": "Not Observed"
-      },
-      "defaultValue": "x"
-    },
-    { "name": "Defense Rating",
+    }
+    ],
+  "postmatch": [
+    
+    { "name": "Defense",
       "code": "dr",
       "type": "radio",
       "choices": {
-        "b": "Below Average<br>",
-        "a": "Average<br>",
+        "b": "Bad<br>",
         "g": "Good<br>",
-        "e": "Excellent<br>",
         "x": "Did not play defense"
       },
       "defaultValue": "x"
-    },
-    { "name": "Speed Rating",
-      "code": "sr",
-      "type": "radio",
-      "choices": {
-        "1": "1 (slow)<br>",
-        "2": "2<br>",
-        "3": "3<br>",
-        "4": "4<br>",
-        "5": "5 (fast)"
-      },
-      "defaultValue":"3"
     },
     { "name": "Died/Immobilized",
       "code": "die",
@@ -215,19 +202,6 @@ var config_data = `
     },
     { "name": "Tippy<br>(almost tipped over)",
       "code": "tip",
-      "type": "bool"
-    },
-    { "name": "Dropped Coral (>2)",
-      "code": "dc",
-      "type": "bool"
-    },
-    { "name": "Dropped Algae (>2)",
-      "code": "da",
-      "type": "bool"
-    },
-    { "name": "Make good<br>alliance partner?",
-      "tooltip": "Would you want this robot on your alliance in eliminations?",
-      "code": "all",
       "type": "bool"
     },
     { "name": "Comments",
