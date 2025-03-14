@@ -5,7 +5,7 @@ var config_data = `
   "page_title": "REEFSCAPE",
   "checkboxAs": "10",
   "prematch": [
-    { "name": "Scouter Initials - TEST6",
+    { "name": "Scouter Initials",
       "code": "s",
       "type": "scouter",
       "size": 5,
